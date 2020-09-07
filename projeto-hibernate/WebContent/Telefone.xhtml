@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Cadastro de telefones</title>
+</h:head>
+<h:body>
+<h:form>
+	<p:growl>
+		<p:menuitem/>
+		<p:menuitem value="Pagina Principal" action="index.jsf"/>
+		<p:menuitem value="Telefones" action="Telefone.xhtml"/>
+	</p:growl>
+</h:form>
+<h1>Cadastro de telefones</h1>
+<br/>
+
+<h:form id="formulario">
+	<p:growl autoUpdate="true" showDetail="true" closable="true" id="msg"/>
+	<h:panelGrid columns="2">
+	
+		<p:outputLabel>Id: </p:outputLabel>
+		<p:outputLabel value="#{telefoneBean.pessoa.id}"/>
+		
+		<p:outputLabel>Nome: </p:outputLabel>
+		<p:outputLabel value="#{telefoneBean.pessoa.nome}" />
+		
+		<p:outputLabel>Telefone: </p:outputLabel>
+		<p:inputMask value="#{telefoneBean.telefone.telfone}" required="true" requiredMessage=" Campo Obrigatorio" mask="(99)9 9999-999"/>
+		
+		<p:outputLabel>Tipo: </p:outputLabel>
+		<p:selectOneMenu value="#{telefoneBean.telefone.tipo}">
+		<f:selectItem itemValue="Celular" itemLabel="Celular"/>
+		<f:selectItem itemValue="Fixo" itemLabel="Fixo"/>
+		</p:selectOneMenu>
+		
+	</h:panelGrid>
+	
+	<p:commandButton value="Salvar" action="#{telefoneBean.Salvar}" ajax="false"></p:commandButton>
+	<p:commandButton value="Novo" action="#{telefoneBean.Novo}"></p:commandButton>
+
+</h:form>
+
+<h:form id="formTelefones">
+	<p:dataTable value="#{telefoneBean.pessoa.telefoneUser}" var="fone" id="tablefone">
+	<f:facet name="header">Lista de Telefones</f:facet>
+	
+	<p:column style="width:150px;">
+	<f:facet name="header">Id</f:facet>
+	<p:outputLabel value="#{fone.id}" style="width:40px"/>
+	</p:column>
+	
+	<p:column>
+	<f:facet name="header">Telefone</f:facet>
+	<p:outputLabel value="#{fone.telfone}"/>
+	</p:column>
+	
+	<p:column>
+	<f:facet name="header">Tipo</f:facet>
+	<p:outputLabel value="#{fone.tipo}"/>
+	</p:column>
+			
+	<p:column>
+	<f:facet name="header">Delete</f:facet>
+	<p:commandLink immediate="true" action="#{telefoneBean.Remover}" id="botaoremover" ajax="false" style="width:90px">
+	<h:graphicImage url="resources/img/1excluir.png"/>
+	<f:setPropertyActionListener value="#{fone}" target="#{telefoneBean.telefone}"></f:setPropertyActionListener>	
+	<f:ajax execute="botaoremover" render="@form :formulario:msg"/>
+	</p:commandLink>
+	</p:column>		
+			
+	</p:dataTable>
+	
+</h:form>
+</h:body>
+</html>
